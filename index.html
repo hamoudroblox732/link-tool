@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Link Tool</title>
+<style>
+body{margin:0;background:#0b0b0f;color:#fff;font-family:Arial;display:flex;justify-content:center;align-items:center;min-height:100vh}
+.box{width:90%;max-width:520px;background:#15151c;padding:25px;border-radius:18px}
+h1{margin-top:0}
+input{width:100%;box-sizing:border-box;padding:14px;border:0;border-radius:10px;background:#24242d;color:#fff;margin:10px 0}
+button{width:100%;padding:14px;border:0;border-radius:10px;background:#3978ff;color:#fff;font-weight:bold;font-size:16px}
+#status{margin-top:15px;color:#aaa}
+</style>
+</head>
+<body>
+<div class="box">
+<h1>Link Tool</h1>
+<input id="link" placeholder="Paste your link here">
+<button onclick="processLink()">Process</button>
+<div id="status"></div>
+</div>
+<script>
+function processLink(){
+    const link=document.getElementById("link").value.trim();
+    const status=document.getElementById("status");
+    if(!link){
+        status.textContent="Enter a link first.";
+        return;
+    }
+    try{
+        new URL(link);
+        status.textContent="Opening your link...";
+        window.location.href=link;
+    }catch{
+        status.textContent="Invalid link.";
+    }
+}
+</script>
+</body>
+</html>
