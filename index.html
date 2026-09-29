@@ -2,40 +2,217 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Link Tool</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KEYS PANEL</title>
 <style>
-body{margin:0;background:#0b0b0f;color:#fff;font-family:Arial;display:flex;justify-content:center;align-items:center;min-height:100vh}
-.box{width:90%;max-width:520px;background:#15151c;padding:25px;border-radius:18px}
-h1{margin-top:0}
-input{width:100%;box-sizing:border-box;padding:14px;border:0;border-radius:10px;background:#24242d;color:#fff;margin:10px 0}
-button{width:100%;padding:14px;border:0;border-radius:10px;background:#3978ff;color:#fff;font-weight:bold;font-size:16px}
-#status{margin-top:15px;color:#aaa}
+*{
+    box-sizing:border-box;
+}
+body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#07090d;
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
+}
+.panel{
+    width:92%;
+    max-width:470px;
+    padding:30px;
+    border:1px solid #252b35;
+    border-radius:22px;
+    background:#10131a;
+    box-shadow:0 25px 80px rgba(0,0,0,.6);
+}
+.header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:25px;
+}
+.title{
+    font-size:25px;
+    font-weight:800;
+    letter-spacing:3px;
+}
+.badge{
+    padding:7px 10px;
+    border-radius:20px;
+    border:1px solid #30405f;
+    background:#121a29;
+    color:#6e9cff;
+    font-size:10px;
+    font-weight:bold;
+    letter-spacing:1px;
+}
+.subtitle{
+    color:#747e8f;
+    font-size:12px;
+    margin-top:5px;
+}
+.section{
+    margin-top:20px;
+}
+label{
+    display:block;
+    margin-bottom:8px;
+    color:#8d96a6;
+    font-size:11px;
+    font-weight:bold;
+    letter-spacing:1px;
+    text-transform:uppercase;
+}
+input{
+    width:100%;
+    height:48px;
+    padding:0 14px;
+    border:1px solid #29303c;
+    border-radius:12px;
+    outline:none;
+    background:#0b0e13;
+    color:#fff;
+    font-size:14px;
+}
+input:focus{
+    border-color:#4d76ff;
+    box-shadow:0 0 0 3px rgba(77,118,255,.10);
+}
+button{
+    width:100%;
+    height:48px;
+    margin-top:14px;
+    border:0;
+    border-radius:12px;
+    background:#416fff;
+    color:#fff;
+    font-size:13px;
+    font-weight:bold;
+    letter-spacing:1px;
+    cursor:pointer;
+}
+button:active{
+    transform:scale(.98);
+}
+.status{
+    margin-top:15px;
+    padding:12px;
+    border:1px solid #252b35;
+    border-radius:10px;
+    background:#0b0e13;
+    color:#7e8797;
+    text-align:center;
+    font-size:11px;
+}
+.hidden{
+    display:none;
+}
+.footer{
+    margin-top:22px;
+    text-align:center;
+    color:#4e5663;
+    font-size:9px;
+    letter-spacing:1.5px;
+}
 </style>
 </head>
 <body>
-<div class="box">
-<h1>Link Tool</h1>
-<input id="link" placeholder="Paste your link here">
-<button onclick="processLink()">Process</button>
-<div id="status"></div>
+<div class="panel">
+    <div id="loginPanel">
+        <div class="header">
+            <div>
+                <div class="title">KEYS</div>
+                <div class="subtitle">SECURE ADMIN ACCESS</div>
+            </div>
+            <div class="badge">LOCKED</div>
+        </div>
+        <div class="section">
+            <label>Access Key</label>
+            <input
+                id="password"
+                type="password"
+                placeholder="Enter KEYS password"
+                autocomplete="off"
+            >
+            <button onclick="login()">UNLOCK PANEL</button>
+            <div id="loginStatus" class="status">
+                Authentication required
+            </div>
+        </div>
+    </div>
+    <div id="adminPanel" class="hidden">
+        <div class="header">
+            <div>
+                <div class="title">KEYS</div>
+                <div class="subtitle">ADMIN LINK PANEL</div>
+            </div>
+            <div class="badge">ADMIN</div>
+        </div>
+        <div class="section">
+            <label>Link</label>
+            <input
+                id="link"
+                type="url"
+                placeholder="Paste your link here"
+                autocomplete="off"
+            >
+            <button onclick="bypass()">BYPASS</button>
+            <div id="status" class="status">
+                Ready
+            </div>
+        </div>
+        <div class="footer">
+            AUTHORIZED ADMIN PANEL
+        </div>
+    </div>
 </div>
 <script>
-function processLink(){
-    const link=document.getElementById("link").value.trim();
-    const status=document.getElementById("status");
+const PASSWORD = "KEYS";
+function login(){
+    const password =
+        document.getElementById("password").value;
+    const status =
+        document.getElementById("loginStatus");
+    if(password === PASSWORD){
+        document
+            .getElementById("loginPanel")
+            .classList.add("hidden");
+        document
+            .getElementById("adminPanel")
+            .classList.remove("hidden");
+    }else{
+        status.textContent = "ACCESS DENIED";
+        document.getElementById("password").value = "";
+    }
+}
+function bypass(){
+    const input =
+        document.getElementById("link");
+    const status =
+        document.getElementById("status");
+    const link =
+        input.value.trim();
     if(!link){
-        status.textContent="Enter a link first.";
+        status.textContent = "PASTE A LINK FIRST";
         return;
     }
     try{
-        new URL(link);
-        status.textContent="Opening your link...";
-        window.location.href=link;
+        const url = new URL(link);
+        status.textContent = "OPENING...";
+        window.open(url.href, "_blank");
     }catch{
-        status.textContent="Invalid link.";
+        status.textContent = "INVALID LINK";
     }
 }
+document
+    .getElementById("password")
+    .addEventListener("keydown", function(event){
+        if(event.key === "Enter"){
+            login();
+        }
+    });
 </script>
 </body>
 </html>
